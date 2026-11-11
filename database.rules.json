@@ -1,0 +1,275 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "halfchess": {
+      "rooms": {
+        "$code": {
+          ".read": true,
+          ".write": true,
+          "v": {
+            ".validate": "newData.isNumber()"
+          },
+          "created": {
+            ".validate": "newData.isNumber()"
+          },
+          "mv": {
+            ".validate": "newData.isString() && newData.val().length < 4000 && (!data.exists() || newData.val().beginsWith(data.val()))"
+          },
+          "t": {
+            "$i": {
+              ".validate": "newData.isNumber() && !data.exists()"
+            }
+          },
+          "w": {
+            ".validate": "newData.hasChildren(['id','name']) && newData.child('id').isString() && newData.child('id').val().length <= 40 && newData.child('name').isString() && newData.child('name').val().length <= 20 && (!data.exists() || data.child('id').val() == newData.child('id').val())"
+          },
+          "b": {
+            ".validate": "newData.hasChildren(['id','name']) && newData.child('id').isString() && newData.child('id').val().length <= 40 && newData.child('name').isString() && newData.child('name').val().length <= 20 && (!data.exists() || data.child('id').val() == newData.child('id').val())"
+          },
+          "res": {
+            ".validate": "!data.exists() && newData.child('r').isString() && (newData.child('r').val() == '1-0' || newData.child('r').val() == '0-1' || newData.child('r').val() == '1/2-1/2') && newData.child('why').isString() && newData.child('why').val().length <= 12"
+          },
+          "draw": {
+            ".validate": "newData.val() == 'w' || newData.val() == 'b'"
+          },
+          "seen": {
+            "$c": {
+              ".validate": "newData.isNumber()"
+            }
+          },
+          "rt": {
+            "$c": {
+              ".validate": "newData.isNumber() && newData.val() >= 100 && newData.val() <= 4000 && !data.exists()"
+            }
+          },
+          "tc": {
+            ".validate": "!data.exists() && newData.child('base').isNumber() && newData.child('inc').isNumber() && newData.child('base').val() >= 0 && newData.child('inc').val() >= 0"
+          },
+          "next": {
+            ".validate": "newData.isString() && newData.val().length <= 8"
+          },
+          "cnt": {
+            "$c": {
+              ".validate": "newData.val() == true"
+            }
+          },
+          "chat": {
+            "$i": {
+              ".validate": "$i.matches(/^[0-9]{1,2}$/) && !data.exists() && newData.hasChildren(['c','m']) && (newData.child('c').val() == 'w' || newData.child('c').val() == 'b') && newData.child('m').isString() && newData.child('m').val().length <= 12"
+            }
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      },
+      "users": {
+        "$u": {
+          ".read": true,
+          ".write": "!data.exists()",
+          ".validate": "newData.hasChildren(['name','salt','iter','hash','created'])",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length <= 32"
+          },
+          "salt": {
+            ".validate": "newData.isString() && newData.val().length <= 64"
+          },
+          "hash": {
+            ".validate": "newData.isString() && newData.val().length <= 128"
+          },
+          "iter": {
+            ".validate": "newData.isNumber() && newData.val() >= 1000 && newData.val() <= 1000000"
+          },
+          "created": {
+            ".validate": "newData.isNumber()"
+          },
+          "stats": {
+            ".write": true,
+            "w": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && ((!data.exists() && newData.val() <= 1) || (data.exists() && newData.val() >= data.val() && newData.val() <= data.val() + 1))"
+            },
+            "l": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && ((!data.exists() && newData.val() <= 1) || (data.exists() && newData.val() >= data.val() && newData.val() <= data.val() + 1))"
+            },
+            "d": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && ((!data.exists() && newData.val() <= 1) || (data.exists() && newData.val() >= data.val() && newData.val() <= data.val() + 1))"
+            },
+            "q": {
+              "$k": {
+                ".validate": "newData.isNumber() && newData.val() >= 0 && ((!data.exists() && newData.val() <= 400) || (data.exists() && newData.val() >= data.val() && newData.val() <= data.val() + 400))"
+              }
+            },
+            "qg": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && ((!data.exists() && newData.val() <= 1) || (data.exists() && newData.val() >= data.val() && newData.val() <= data.val() + 1))"
+            },
+            "pz": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && ((!data.exists() && newData.val() <= 100) || (data.exists() && newData.val() >= data.val() && newData.val() <= data.val() + 100))"
+            },
+            "cq": {
+              "$k": {
+                ".validate": "newData.isNumber() && newData.val() >= 0 && ((!data.exists() && newData.val() <= 400) || (data.exists() && newData.val() >= data.val() && newData.val() <= data.val() + 400))"
+              }
+            },
+            "cqg": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && ((!data.exists() && newData.val() <= 1) || (data.exists() && newData.val() >= data.val() && newData.val() <= data.val() + 1))"
+            },
+            "$other": {
+              ".validate": "true"
+            }
+          }
+        }
+      },
+      "rank": {
+        ".read": true,
+        "$cat": {
+          ".validate": "$cat == 'bullet' || $cat == 'blitz' || $cat == 'rapid' || $cat == 'classic'",
+          "$u": {
+            ".write": "newData.exists()",
+            ".validate": "newData.hasChildren(['n','r','g']) && ((!data.exists() && newData.child('r').val() == 1200 && newData.child('g').val() == 0) || (data.exists() && newData.child('g').val() == data.child('g').val() + 1 && newData.child('lg').isString() && newData.child('lg').val().matches(/^[A-Z2-9]{4,6}$/) && newData.child('lg').val() != data.child('lg').val() && newData.child('r').val() <= data.child('r').val() + 40 && newData.child('r').val() >= data.child('r').val() - 40 && root.child('halfchess/rooms/' + newData.child('lg').val() + '/res').exists() && root.child('halfchess/rooms/' + newData.child('lg').val() + '/mv').val().length >= 9 && (root.child('halfchess/rooms/' + newData.child('lg').val() + '/w/id').val() == 'u:' + $u || root.child('halfchess/rooms/' + newData.child('lg').val() + '/b/id').val() == 'u:' + $u)))",
+            "n": {
+              ".validate": "newData.isString() && newData.val().length <= 40"
+            },
+            "r": {
+              ".validate": "newData.isNumber() && newData.val() >= 100 && newData.val() <= 4000"
+            },
+            "g": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "p": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "w": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "d": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "l": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "lg": {
+              ".validate": "newData.isString() && newData.val().length <= 6"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      },
+      "avatars": {
+        ".read": true,
+        "$u": {
+          ".write": true,
+          ".validate": "newData.isString() && newData.val().length < 40000 && newData.val().matches(/^data:image\\/(jpeg|png|webp);base64,/)"
+        }
+      },
+      "invites": {
+        "$to": {
+          ".read": true,
+          "$from": {
+            ".write": true,
+            ".validate": "newData.hasChildren(['code','name','ts']) && newData.child('code').isString() && newData.child('code').val().matches(/^[A-Z2-9]{4,6}$/) && newData.child('name').isString() && newData.child('name').val().length <= 20 && newData.child('ts').isNumber()",
+            "code": {
+              ".validate": "newData.isString()"
+            },
+            "name": {
+              ".validate": "newData.isString()"
+            },
+            "ts": {
+              ".validate": "newData.isNumber()"
+            },
+            "tc": {
+              ".validate": "newData.child('base').isNumber() && newData.child('inc').isNumber()"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      },
+      "archive": {
+        "$u": {
+          ".read": true,
+          ".indexOn": [
+            "ts"
+          ],
+          "$id": {
+            ".write": "!data.exists() || (!newData.exists() && data.child('k').val() == 'cpu')",
+            ".validate": "newData.hasChildren(['ts','k','w','b','r','why','mv','c']) && (newData.child('c').val() == 1 || newData.child('c').val() == -1) && ((newData.child('k').val() == 'on' && $id.matches(/^[A-Z2-9]{4,6}$/) && (root.child('halfchess/rooms/' + $id + '/w/id').val() == 'u:' + $u || root.child('halfchess/rooms/' + $id + '/b/id').val() == 'u:' + $u) && root.child('halfchess/rooms/' + $id + '/mv').val() == newData.child('mv').val()) || (newData.child('k').val() == 'cpu' && $id.matches(/^c[0-9a-z]{6,12}$/) && newData.child('lv').isNumber()))",
+            "ts": {
+              ".validate": "newData.isNumber()"
+            },
+            "k": {
+              ".validate": "newData.isString()"
+            },
+            "w": {
+              ".validate": "newData.isString() && newData.val().length <= 24"
+            },
+            "b": {
+              ".validate": "newData.isString() && newData.val().length <= 24"
+            },
+            "r": {
+              ".validate": "newData.val() == '1-0' || newData.val() == '0-1' || newData.val() == '1/2-1/2'"
+            },
+            "why": {
+              ".validate": "newData.isString() && newData.val().length <= 12"
+            },
+            "mv": {
+              ".validate": "newData.isString() && newData.val().length >= 4 && newData.val().length < 4000"
+            },
+            "c": {
+              ".validate": "newData.isNumber()"
+            },
+            "o": {
+              ".validate": "newData.isString() && newData.val().length <= 40"
+            },
+            "lv": {
+              ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 6"
+            },
+            "tc": {
+              ".validate": "newData.child('base').isNumber() && newData.child('inc').isNumber()"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      },
+      "friends": {
+        "$u": {
+          ".read": true,
+          "$f": {
+            ".write": true,
+            ".validate": "newData.hasChildren(['n','ts']) && $f != $u && root.child('halfchess/users/' + $f + '/name').exists()",
+            "n": {
+              ".validate": "newData.isString() && newData.val().length <= 32"
+            },
+            "ts": {
+              ".validate": "newData.isNumber()"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      },
+      "presence": {
+        "$u": {
+          ".read": true,
+          ".write": true,
+          ".validate": "newData.hasChildren(['t']) && newData.child('t').isNumber() && newData.child('t').val() <= now + 600000",
+          "t": {
+            ".validate": "newData.isNumber()"
+          },
+          "rm": {
+            ".validate": "newData.isString() && newData.val().matches(/^[A-Z2-9]{4,6}$/)"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    }
+  }
+}

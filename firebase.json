@@ -1,0 +1,5 @@
+{
+  "database": [
+    { "instance": "hemi-chess-default-rtdb", "rules": "database.rules.json" }
+  ]
+}

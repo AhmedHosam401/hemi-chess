@@ -1,0 +1,52 @@
+name: Publish Firebase rules
+
+# Publishes database.rules.json to the Realtime Database whenever that file (or this setup) changes on main.
+# One-time setup: add a repository secret named FIREBASE_SERVICE_ACCOUNT containing a service-account key (JSON).
+# Until the secret exists this workflow does nothing and finishes green.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - database.rules.json
+      - firebase.json
+      - .firebaserc
+      - .github/workflows/firebase-rules.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-rules
+  cancel-in-progress: false
+
+jobs:
+  rules:
+    runs-on: ubuntu-latest
+    env:
+      SA_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check the rules file is valid JSON
+        run: node -e "const r=JSON.parse(require('fs').readFileSync('database.rules.json','utf8')); if(!r.rules) throw new Error('no \"rules\" key'); console.log('rules file OK')"
+
+      - name: Is the key set?
+        id: key
+        run: |
+          if [ -z "$SA_JSON" ]; then
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Secret FIREBASE_SERVICE_ACCOUNT is not set yet - the rules were NOT published."
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish the rules
+        if: steps.key.outputs.present == 'true'
+        run: |
+          printf '%s' "$SA_JSON" > "$RUNNER_TEMP/sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          trap 'rm -f "$RUNNER_TEMP/sa.json"' EXIT
+          npx --yes firebase-tools@latest deploy --only database --non-interactive
