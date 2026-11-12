@@ -269,6 +269,166 @@
             ".validate": false
           }
         }
+      },
+      "queue": {
+        ".indexOn": [
+          "t"
+        ],
+        ".read": true,
+        "$code": {
+          ".write": true,
+          ".validate": "newData.hasChildren(['n','i','t','t0','c'])",
+          "n": {
+            ".validate": "newData.isString() && newData.val().length <= 20"
+          },
+          "i": {
+            ".validate": "newData.isString() && newData.val().length <= 40"
+          },
+          "k": {
+            ".validate": "newData.isString() && newData.val().length <= 40"
+          },
+          "p": {
+            ".validate": "newData.val() == 'w' || newData.val() == 'b' || newData.val() == 'r'"
+          },
+          "c": {
+            ".validate": "newData.val() == 1 || newData.val() == -1"
+          },
+          "t": {
+            ".validate": "newData.isNumber()"
+          },
+          "t0": {
+            ".validate": "newData.isNumber()"
+          },
+          "tc": {
+            "base": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "inc": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            }
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      },
+      "puz": {
+        "$u": {
+          ".read": true,
+          ".write": true,
+          ".validate": "newData.isString() && newData.val().length <= 600 && newData.val().matches(/^[01]*$/)"
+        }
+      },
+      "duo": {
+        "$code": {
+          ".read": true,
+          ".write": true,
+          "v": {
+            ".validate": "newData.isNumber()"
+          },
+          "created": {
+            ".validate": "newData.isNumber()"
+          },
+          "n": {
+            ".validate": "(newData.val() == 3 || newData.val() == 4) && !data.exists()"
+          },
+          "k": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5 && !data.exists()"
+          },
+          "tm": {
+            ".validate": "(newData.val() == 'r' || newData.val() == 'p') && !data.exists()"
+          },
+          "tc": {
+            ".validate": "!data.exists() && newData.child('base').isNumber() && newData.child('inc').isNumber() && newData.child('base').val() >= 30 && newData.child('inc').val() >= 0"
+          },
+          "p": {
+            "$i": {
+              ".validate": "$i.matches(/^[0-3]$/) && newData.hasChildren(['id','name','k','r']) && newData.child('id').isString() && newData.child('id').val().length <= 40 && newData.child('name').isString() && newData.child('name').val().length <= 20 && newData.child('k').isString() && newData.child('k').val().length <= 40 && (!data.exists() || data.child('id').val() == newData.child('id').val()) && ($i != '3' || newData.parent().parent().child('n').val() == 4)",
+              "id": {
+                ".validate": "newData.isString()"
+              },
+              "name": {
+                ".validate": "newData.isString()"
+              },
+              "k": {
+                ".validate": "newData.isString()"
+              },
+              "r": {
+                ".validate": "newData.isNumber() && newData.val() >= 100 && newData.val() <= 4000 && (!data.exists() || data.val() == newData.val())"
+              },
+              "t": {
+                ".validate": "newData.val() == 1 || newData.val() == 2"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          },
+          "go": {
+            ".validate": "newData.isNumber() && !data.exists()"
+          },
+          "mv": {
+            ".validate": "newData.isString() && newData.val().length < 4000 && (!data.exists() || newData.val().beginsWith(data.val())) && (newData.val() == '' || newData.parent().child('go').exists())"
+          },
+          "t": {
+            "$i": {
+              ".validate": "newData.isNumber() && !data.exists()"
+            }
+          },
+          "res": {
+            ".validate": "!data.exists() && newData.child('r').isString() && (newData.child('r').val() == '1-0' || newData.child('r').val() == '0-1' || newData.child('r').val() == '1/2-1/2') && newData.child('why').isString() && newData.child('why').val().length <= 12"
+          },
+          "seen": {
+            "$i": {
+              ".validate": "newData.isNumber()"
+            }
+          },
+          "next": {
+            ".validate": "newData.isString() && newData.val().length <= 8"
+          },
+          "cnt": {
+            "$i": {
+              ".validate": "newData.val() == true"
+            }
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      },
+      "duorank": {
+        ".read": true,
+        "$u": {
+          ".write": "newData.exists()",
+          ".validate": "newData.hasChildren(['n','r','g']) && ((!data.exists() && newData.child('r').val() == 1200 && newData.child('g').val() == 0) || (data.exists() && newData.child('g').val() == data.child('g').val() + 1 && newData.child('lg').isString() && newData.child('lg').val().matches(/^[A-Z2-9]{4,6}$/) && newData.child('lg').val() != data.child('lg').val() && newData.child('r').val() <= data.child('r').val() + 40 && newData.child('r').val() >= data.child('r').val() - 40 && root.child('halfchess/duo/' + newData.child('lg').val() + '/res').exists() && root.child('halfchess/duo/' + newData.child('lg').val() + '/mv').val().length >= 19 && (root.child('halfchess/duo/' + newData.child('lg').val() + '/p/0/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/1/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/2/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/3/id').val() == 'u:' + $u)))",
+          "n": {
+            ".validate": "newData.isString() && newData.val().length <= 40"
+          },
+          "r": {
+            ".validate": "newData.isNumber() && newData.val() >= 100 && newData.val() <= 4000"
+          },
+          "g": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "p": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "w": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "d": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "l": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "lg": {
+            ".validate": "newData.isString() && newData.val().length <= 6"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
       }
     }
   }
