@@ -393,6 +393,9 @@
           },
           "$other": {
             ".validate": false
+          },
+          "bd": {
+            ".validate": "(newData.val() == 'h' || newData.val() == 'f') && !data.exists()"
           }
         }
       },
@@ -400,7 +403,41 @@
         ".read": true,
         "$u": {
           ".write": "newData.exists()",
-          ".validate": "newData.hasChildren(['n','r','g']) && ((!data.exists() && newData.child('r').val() == 1200 && newData.child('g').val() == 0) || (data.exists() && newData.child('g').val() == data.child('g').val() + 1 && newData.child('lg').isString() && newData.child('lg').val().matches(/^[A-Z2-9]{4,6}$/) && newData.child('lg').val() != data.child('lg').val() && newData.child('r').val() <= data.child('r').val() + 40 && newData.child('r').val() >= data.child('r').val() - 40 && root.child('halfchess/duo/' + newData.child('lg').val() + '/res').exists() && root.child('halfchess/duo/' + newData.child('lg').val() + '/mv').val().length >= 19 && (root.child('halfchess/duo/' + newData.child('lg').val() + '/p/0/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/1/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/2/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/3/id').val() == 'u:' + $u)))",
+          ".validate": "newData.hasChildren(['n','r','g']) && ((!data.exists() && newData.child('r').val() == 1200 && newData.child('g').val() == 0) || (data.exists() && newData.child('g').val() == data.child('g').val() + 1 && newData.child('lg').isString() && newData.child('lg').val().matches(/^[A-Z2-9]{4,6}$/) && newData.child('lg').val() != data.child('lg').val() && newData.child('r').val() <= data.child('r').val() + 40 && newData.child('r').val() >= data.child('r').val() - 40 && root.child('halfchess/duo/' + newData.child('lg').val() + '/res').exists() && root.child('halfchess/duo/' + newData.child('lg').val() + '/bd').val() != 'f' && root.child('halfchess/duo/' + newData.child('lg').val() + '/mv').val().length >= 19 && (root.child('halfchess/duo/' + newData.child('lg').val() + '/p/0/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/1/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/2/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/3/id').val() == 'u:' + $u)))",
+          "n": {
+            ".validate": "newData.isString() && newData.val().length <= 40"
+          },
+          "r": {
+            ".validate": "newData.isNumber() && newData.val() >= 100 && newData.val() <= 4000"
+          },
+          "g": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "p": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "w": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "d": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "l": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "lg": {
+            ".validate": "newData.isString() && newData.val().length <= 6"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      },
+      "duorankf": {
+        ".read": true,
+        "$u": {
+          ".write": "newData.exists()",
+          ".validate": "newData.hasChildren(['n','r','g']) && ((!data.exists() && newData.child('r').val() == 1200 && newData.child('g').val() == 0) || (data.exists() && newData.child('g').val() == data.child('g').val() + 1 && newData.child('lg').isString() && newData.child('lg').val().matches(/^[A-Z2-9]{4,6}$/) && newData.child('lg').val() != data.child('lg').val() && newData.child('r').val() <= data.child('r').val() + 40 && newData.child('r').val() >= data.child('r').val() - 40 && root.child('halfchess/duo/' + newData.child('lg').val() + '/res').exists() && root.child('halfchess/duo/' + newData.child('lg').val() + '/bd').val() == 'f' && root.child('halfchess/duo/' + newData.child('lg').val() + '/mv').val().length >= 19 && (root.child('halfchess/duo/' + newData.child('lg').val() + '/p/0/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/1/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/2/id').val() == 'u:' + $u || root.child('halfchess/duo/' + newData.child('lg').val() + '/p/3/id').val() == 'u:' + $u)))",
           "n": {
             ".validate": "newData.isString() && newData.val().length <= 40"
           },
