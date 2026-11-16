@@ -466,6 +466,69 @@
             ".validate": false
           }
         }
+      },
+      "quad": {
+        "$code": {
+          ".read": true,
+          ".write": true,
+          "v": {
+            ".validate": "newData.isNumber()"
+          },
+          "created": {
+            ".validate": "newData.isNumber()"
+          },
+          "bd": {
+            ".validate": "newData.val() == 'x' && !data.exists()"
+          },
+          "tc": {
+            ".validate": "!data.exists() && newData.child('base').isNumber() && newData.child('inc').isNumber() && newData.child('base').val() >= 30 && newData.child('inc').val() >= 0"
+          },
+          "p": {
+            "$i": {
+              ".validate": "$i.matches(/^[0-3]$/) && newData.hasChildren(['id','name','k']) && newData.child('id').isString() && newData.child('id').val().length <= 40 && newData.child('name').isString() && newData.child('name').val().length <= 20 && newData.child('k').isString() && newData.child('k').val().length <= 40 && (!data.exists() || data.child('id').val() == newData.child('id').val())",
+              "id": {
+                ".validate": "newData.isString()"
+              },
+              "name": {
+                ".validate": "newData.isString()"
+              },
+              "k": {
+                ".validate": "newData.isString()"
+              },
+              "r": {
+                ".validate": "newData.isNumber() && newData.val() >= 100 && newData.val() <= 4000 && (!data.exists() || data.val() == newData.val())"
+              },
+              "$other": {
+                ".validate": "false"
+              }
+            }
+          },
+          "go": {
+            ".validate": "newData.isNumber() && !data.exists()"
+          },
+          "mv": {
+            ".validate": "newData.isString() && newData.val().length < 12000 && (!data.exists() || newData.val().beginsWith(data.val())) && (newData.val() == '' || newData.parent().child('go').exists())"
+          },
+          "t": {
+            "$i": {
+              ".validate": "newData.isNumber() && !data.exists()"
+            }
+          },
+          "res": {
+            ".validate": "!data.exists() && newData.child('w').isNumber() && newData.child('w').val() >= -1 && newData.child('w').val() <= 3 && newData.child('why').isString() && newData.child('why').val().length <= 12"
+          },
+          "seen": {
+            "$i": {
+              ".validate": "newData.isNumber()"
+            }
+          },
+          "next": {
+            ".validate": "newData.isString() && newData.val().length <= 8"
+          },
+          "$other": {
+            ".validate": "false"
+          }
+        }
       }
     }
   }
